@@ -1,0 +1,66 @@
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#wrap{
+				width: 300px;
+				margin: 10px auto;
+				border-radius: 5px;
+				border: 1px solid red;
+			}
+			#username{
+				width: 296px;
+				height: 30px;
+				margin: 0px auto;
+			}
+			#show{
+				width: 300px;
+				height: 400px;
+				background-color: white;
+				overflow: scroll;
+			}
+			#show ul {
+				list-style: none;
+				background-color: white;
+				border-bottom: 1px dotted lightblue;
+			}
+			#show ul li p {
+				padding: 5px;
+			}
+			#show ul li p:nth-child(1) {
+				font-size: 12px;
+			}		
+			#show ul li:nth-child(2) {
+				font-size: 16px;
+				background-color:lightcoral;
+				border-radius: 2px;
+			}
+			#msgTest{
+				width: 230px;
+				height: 30px;
+				line-height: 30px;
+			}
+			#sendBtn{
+				width: 50px;
+				height: 30px;
+				border-radius: 5px;
+				background-color: lightskyblue;
+			}
+			#positionRight{
+				text-align: right;
+			}
+			#positionRight #spanId{
+				height: 30px;
+				padding: 5px;
+				border-radius: 2px;
+				background-color: #4facd9;
+			}
+			#positionLeft{
+				text-align: left;
+			}
+			#positionLeft #spanId{
+				height: 30px;
+				padding: 5px;
+				border-radius: 2px;
+				background-color: #FFC0A1;
+			}

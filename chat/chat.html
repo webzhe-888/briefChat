@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<link href="chatCss.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div id="wrap">
+			<input type="text" name="username" id="username" placeholder="输入用户名" />
+			<div id="show">
+				
+			</div>
+			<input type="text" name="msgTest" id="msgTest" value="" />
+			<button id="sendBtn">发送</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+//		向服务器发送接收消息,时刻,通过定时器
+		//jquery中点击事件
+		var chatContent = null;
+		$(function($){
+			var name = null;
+			var time = setInterval(function(){
+				receiveMsg();
+			},1000);
+			//sendBtn发送
+			$("#sendBtn").on("click",function(){
+				sendMsg();
+				//$("#msgTest").val("");
+				$("#msgTest").attr("value", "");
+				//document.getElementById('msgTest').value = "";
+			});
+			//回车发送
+			$("#msgTest").on("keypress",function(event){
+				if(event.keyCode == 13){ 
+					sendMsg();
+					//$("#msgTest").val("");
+					$("#msgTest").attr("value", "");
+					//document.getElementById('msgTest').value = "";
+				}
+			});
+			//发送消息的方法
+			function sendMsg (){
+				//连接php文件
+				name = $("#username")[0].value;
+				if (name != "") {
+					$("#username")[0].style.display = 'none';
+				}
+				var msg = $("#msgTest")[0].value;//获取的是一个数组，需要加0
+				var paraString = "name=" + name + "&msg=" + msg; //拼接字符串
+				getHttpRequest("post" , "sendMsg.php",paraString,function(result){
+					console.log(result);
+				});
+			}
+			//接收消息的方法
+			function receiveMsg(){
+				//连接php文件
+				var receivePHP = "receiveMsg.php?name=" + name;
+				getHttpRequest("get" , receivePHP,name,function(result){
+					//根据内容是否更新，如果更新，滚轮到最低部
+					if (chatContent != result) {
+						$("#show").html(result);
+						$("#show")[0].scrollTop = $("#show")[0].scrollHeight;
+					}
+					chatContent = result;
+				});
+			}
+			//网络请求
+			function getHttpRequest(method,urlString,param,callbackFn){
+				var httpRequest;
+				if (window.XMLHttpRequest) {
+					httpRequest = new XMLHttpRequest();
+				} else{
+					httpRequest = new ActiveXObject("Microsoft XMLHTTP");
+				}
+				//判断请求方式是get还是post
+				if (method == "get" || method == "GET") {
+					param ="";
+				}
+				httpRequest.open(method , urlString , true); 
+				if (method == "post" || method == "POST") {
+					httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				}
+				httpRequest.send(param);
+				httpRequest.onreadystatechange = function(){
+					if (httpRequest.readyState == 4 && httpRequest.status ==200) {
+						callbackFn.call(httpRequest,httpRequest.responseText);
+					}
+				}
+			}
+		});
+		
+	</script>
+</html>
